@@ -57,6 +57,8 @@ public class LogAnalyzerLibClass {
                 userAgent="";
                 //System.out.println(line);
                 String[] logEntry = line.split(" ");
+                if(logEntry.length<9)
+                    continue;
                 if (logEntry[9].contains("-") || logEntry[9].contains("\n") || logEntry.length<9) {
                     continue;
                 }

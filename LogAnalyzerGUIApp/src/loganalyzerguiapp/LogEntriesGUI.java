@@ -21,7 +21,7 @@ import org.me.loganalyzerlibrary.LogAnalyzerLibClass;
  *
  * @author nasaam
  */
-public class LogEntriesGUI extends javax.swing.JFrame {
+public class LogEntriesGUI extends javax.swing.JFrame implements Runnable{
 
     /**
      * Creates new form LogEntriesGUI
@@ -111,6 +111,23 @@ public class LogEntriesGUI extends javax.swing.JFrame {
             Integer totalRequest=responseCode.get(code);
             String[] vector={code+"",totalRequest+""};
             dtm.addRow(vector);
+        }
+    }
+    public void run(){
+        if(serverUrl!=null){
+            JFileChooser chooser=new JFileChooser();
+            File file = new File("access.log");
+            chooser.setSelectedFile(file);
+            int result=chooser.showSaveDialog(null);
+            if(result==JFileChooser.APPROVE_OPTION){
+                File selectedFile = chooser.getSelectedFile();
+                JOptionPane.showMessageDialog(null,"Downloading file.");
+                FileTransferClientLib.connectForFileTransfer(selectedFile.getAbsolutePath(),serverUrl);
+                System.out.println("Approved: "+selectedFile.getAbsolutePath());
+            }
+        }
+        else{
+           JOptionPane.showMessageDialog(null,"Set Remote Server URL.");
         }
     }
   
@@ -394,25 +411,12 @@ public class LogEntriesGUI extends javax.swing.JFrame {
         if(result==JFileChooser.APPROVE_OPTION){
             File selectedFile=chooser.getSelectedFile();
             logFilePath=selectedFile.getAbsolutePath();
-        }
+        }   
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        if(serverUrl!=null){
-            JFileChooser chooser=new JFileChooser();
-            File file = new File("access.log");
-            chooser.setSelectedFile(file);
-            int result=chooser.showSaveDialog(null);
-            if(result==JFileChooser.APPROVE_OPTION){
-                File selectedFile = chooser.getSelectedFile();
-                JOptionPane.showMessageDialog(null,"Downloading file.");
-                FileTransferClientLib.connectForFileTransfer(selectedFile.getAbsolutePath(),serverUrl);
-                System.out.println("Approved: "+selectedFile.getAbsolutePath());
-            }
-        }
-        else{
-           JOptionPane.showMessageDialog(null,"Set Remote Server URL.");
-        }
+           Thread thread = new Thread(this, "MyWorkerThread");
+           thread.start();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed

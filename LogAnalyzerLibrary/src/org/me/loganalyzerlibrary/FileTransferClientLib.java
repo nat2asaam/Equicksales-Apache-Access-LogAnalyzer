@@ -17,10 +17,11 @@ public class FileTransferClientLib {
     private static DataInputStream dataInputStream = null;
 
     public static void main(String[] args) {
-        connectForFileTransfer("log/access.log","localhost");// file path to save file to
+        //connectForFileTransfer("log/access.log","localhost");// file path to save file to
     }
     public static void connectForFileTransfer(String filepath,String serverUrl){
-        try (Socket socket = new Socket(serverUrl, 5000)) {
+        try {
+            Socket socket = new Socket(serverUrl, 5000);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             String path = filepath;
