@@ -5,6 +5,13 @@ import java.io.FileInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
+import java.io.IOException;
 
 public class FileTransferServerLib {
     private static DataOutputStream dataOutputStream = null;
@@ -19,6 +26,7 @@ public class FileTransferServerLib {
             dataInputStream = new DataInputStream(clientSocket.getInputStream());
             dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
             //String path = new File("log/access.log.1").getAbsolutePath();
+            grantReadPermissionToOthers("/var/log/apache2/access.log");
             String path = new File("/var/log/apache2/access.log").getAbsolutePath();
             System.out.println("path: "+path);
             //receiveFile(path);
@@ -72,6 +80,19 @@ public class FileTransferServerLib {
         }
         fileInputStream.close();
         System.out.println("Finished tranfering file");
+    }
+    public static void grantReadPermissionToOthers(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+
+        // Get the current permissions
+        Set<PosixFilePermission> perms = Files.getPosixFilePermissions(path);
+
+        // Add read permission for others
+        perms.add(PosixFilePermission.OTHERS_READ);
+
+        // Set the updated permissions
+        Files.setPosixFilePermissions(path, perms);
+        System.out.println("Read permission granted to others for: " + filePath);
     }
 
 }
