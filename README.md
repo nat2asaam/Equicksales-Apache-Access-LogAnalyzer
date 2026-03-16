@@ -1,4 +1,5 @@
 # Equicksales-Apache-Access-LogAnalyzer
+<img src="banner5.jpg" class="img-fluid" alt="Responsive image"/>
 This project is about analyzing apache access log. We have been conducting research on developing a tool for apache access log analysis. This research project has culminated into the development of a software for analyzing apache access log files.
 
 To test this tool download the project files and extract it. Then copy the dist folder in the LogAnalyzerGUIApp. You can double click the LogAnalyzerGUIApp.jar file and the tool will launch.
